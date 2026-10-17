@@ -1,0 +1,100 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "radar-stream-decoder"
+version = "0.1.0"
+description = "Decoder for TI mmWave radar UART TLV streams: resynchronising packet assembly, decoding of the out-of-box demo, Vital Signs, people counting and people tracking output (checked against TI's firmware sources where they were available, otherwise against TI's documentation and parsers), FMCW unit conversion, capture forensics, live serial capture and a PySide6 viewer."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "RL" }]
+maintainers = [{ name = "RL" }]
+keywords = [
+    "mmwave",
+    "fmcw-radar",
+    "tlv",
+    "point-cloud",
+    "serial",
+    "iwr1443",
+    "iwr1642",
+    "iwr6843",
+    "vital-signs",
+    "people-counting",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: System :: Hardware",
+    "Typing :: Typed",
+]
+# The decoder, the unit conversions, the forensics and the synthetic generator
+# need nothing beyond NumPy; typer drives the command line.
+dependencies = [
+    "numpy>=1.24",
+    "typer>=0.12",
+]
+
+[project.optional-dependencies]
+# Live capture from the radar's UART ports.
+serial = ["pyserial>=3.5"]
+# The PySide6 viewer; matplotlib draws into it through the QtAgg backend.
+gui = ["PySide6>=6.5", "matplotlib>=3.6"]
+# DataFrame export (radar_stream_decoder.export.to_dataframe).
+pandas = ["pandas>=1.5"]
+all = ["pyserial>=3.5", "PySide6>=6.5", "matplotlib>=3.6", "pandas>=1.5"]
+dev = ["pytest>=7.2", "ruff>=0.4"]
+
+[project.scripts]
+radar-stream-decoder = "radar_stream_decoder.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/recklight/radar-stream-decoder"
+Repository = "https://github.com/recklight/radar-stream-decoder"
+Issues = "https://github.com/recklight/radar-stream-decoder/issues"
+Changelog = "https://github.com/recklight/radar-stream-decoder/blob/master/CHANGELOG.md"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+radar_stream_decoder = ["py.typed"]
+
+[tool.pytest.ini_options]
+minversion = "7.2"
+testpaths = ["tests", "src"]
+# "src" makes the package importable straight from a checkout, without installing.
+pythonpath = ["src"]
+addopts = "-ra --doctest-modules"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests", "examples"]
+
+[tool.ruff.format]
+# Ruff 0.16+ also formats code blocks in Markdown; the README examples are aligned by hand.
+exclude = ["*.md"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4", "SIM", "RUF"]
+# The viewer's interface text is Traditional Chinese, which uses full-width punctuation.
+allowed-confusables = ["（", "）", "，", "：", "；", "！", "？", "／"]
+
+[tool.ruff.lint.per-file-ignores]
+# typer declares options as call expressions in parameter defaults; that is the
+# framework's documented idiom, not the mutable-default bug B008 looks for.
+"src/radar_stream_decoder/cli.py" = ["B008"]

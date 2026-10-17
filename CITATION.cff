@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "如果你在研究中使用了本軟體，請依下列資訊引用。"
+title: "radar-stream-decoder"
+abstract: "Decoder for TI mmWave radar UART TLV streams: resynchronising packet assembly, decoding of the out-of-box demo, Vital Signs, people counting and people tracking output (checked against TI's firmware sources where they were available, otherwise against TI's documentation and parsers), FMCW unit conversion, capture forensics, live serial capture and a PySide6 viewer."
+type: software
+authors:
+  - name: "RL"
+version: "0.1.0"
+date-released: 2026-10-17
+license: MIT
+repository-code: "https://github.com/recklight/radar-stream-decoder"
+keywords:
+  - mmwave
+  - fmcw-radar
+  - tlv
+  - point-cloud
+  - serial
+  - iwr1443
+  - iwr1642
+  - iwr6843
+  - vital-signs
+  - people-counting

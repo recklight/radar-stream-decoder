@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+
+# Testing / linting caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Captures and their decoded output are data, not source; recordings stay out of git.
+*.bin
+*.dat
+*.npz
+*.csv
+*.jsonl
+*.log
+report.json
+evaluation.json
+decoded*/
+captures/
+outputs/
+examples/output/
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
